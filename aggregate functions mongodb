@@ -1,0 +1,43 @@
+
+db.orders.insertMany(
+     [
+          {product: "toothbrush", total: 4.75, customer: "Mike"},
+          {product: "guitar", total: 199.99, customer: "Tom"},
+          {product: "milk", total: 11.33, customer: "Mike"},
+          {product: "pizza", total: 8.50, customer: "Karen"},
+          {product: "toothbrush", total: 4.75, customer: "Karen"},
+          {product: "pizza", total: 4.75, customer: "Dave"}
+          {product: "toothbrush", total: 4.75, customer: "Mike"},
+     ]
+)
+
+
+db.orders.count({product: "toothbrush"})
+
+
+db.orders.distinct("product")
+
+
+db.orders.aggregate(
+     [
+          {$match: {} },
+          {$group: {_id: "$customer", total: { $sum: "$total"} } }
+     ]
+)
+
+
+db.orders.aggregate(
+     [
+          {$match: {} },
+          {$group: {_id: "$product", total: { $sum: "$total"} } },
+          {$sort: {total: -1}}
+     ]
+)
+
+db.orders.aggregate(
+     [
+          {$match: {product: {$in: ["toothbrush", "pizza"]} } },
+          {$group: {_id: "$product", total: { $sum: "$total"} } },
+     ]
+)
+
